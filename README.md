@@ -6,6 +6,12 @@ The pipeline is implemented in the [AWS Serverless Application Model](https://aw
 
 See [Quick Startup](docs/C-CCASEdevquickstartup-020721-0912.pdf) for getting started.
 
+## Contents
+1. [Structure](#Structure)
+2. [Development](#Development)
+3. [Custom comprehend + analytics Lambda functionality](#functionality)
+4. [Quicksight Analysis and Dashboard](#qs)
+
 ## Structure
 
 The event-driven AI pipeline is structured as follows,
@@ -19,6 +25,8 @@ The event-driven AI pipeline is structured as follows,
 7. Connected AWS Quicksight Analysis produces charts and graphs based on the raw imported data and various aggregates.
 
 The folder structure should be as follows,
+
+```
 s3/
 ├── cti-transcribe-job-input/
 │   └── transcribe_comprehend_pipeline/
@@ -36,19 +44,20 @@ s3/
     └── transcribe_comprehend_pipeline/
         └── output/
             └── .csv
+```
 
 ### AWS S3 Locations
 
-Transcription input bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-transcribe-job-input
-Comprehend input bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-comprehend-job-input
-Comprehend output bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-comprehend-job-output
+- Transcription input bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-transcribe-job-input
+- Comprehend input bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-comprehend-job-input
+- Comprehend output bucket: https://s3.console.aws.amazon.com/s3/buckets/cti-comprehend-job-output
 
 ## Development
 
 The Lambda functions are implemented in the AWS Serverless Application Model (SAM) hosted here. The two functions are at transcribe-comprehend-pipeline/transcribe_and_redact and transcribe-comprehend-pipeline/redact_and_comprehend. The Lambda configurations, including S3 triggers, timeout (TODO [2]) and IAM roles [3] are described in transcribe-comprehend-pipeline/template.yaml. From the AWS CLI, these are deployed to AWS CloudFormation using `sam deploy`. The CloudFormation stack is [here](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/stackinfo?stackId=arn%3Aaws%3Acloudformation%3Aeu-west-2%3A337847985510%3Astack%2Ftranscribe-comprehend-pipeline%2Ff80d0e30-ce9b-11eb-ad06-061b6b0df246). 
 
 
-## Custom comprehend + analytics Lambda functionality
+## Custom comprehend + analytics Lambda functionality <a name="functionality"></a>
 
 The Lambda function improves on the built-in capabilities of AWS Comprehend. These include:
 
@@ -59,7 +68,7 @@ The Lambda function improves on the built-in capabilities of AWS Comprehend. The
 - Determining how long speakers talk over each other (talkover time) and how often (talkover count) (requires multi-channel transcription which in turn requires multi-channel audio).
 - Determining individual speaker sentiment (requires at least multi-speaker transcription).
 
-## Quicksight Analysis and Dashboard
+## Quicksight Analysis and Dashboard <a name="qs"></a>
 
 The current Quicksight Dataset reads raw CSVs from folder and can be manually or automatically refreshed to ingest new data. Quicksight must be configured to have a role with the correct policy to read the S3 bucket. Currently the CSV columns read as follows: `Filename,Datetime,Job,Description,Value,Text,Confidence` from which a Quicksight Analysis is easily and quickly created. Graphs and charts are created by drag-and-dropping fields and creating filters. Publish an Analysis to create a Dashboard, which can be exported in Enterprise Edition.
 
