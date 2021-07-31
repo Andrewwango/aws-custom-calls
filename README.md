@@ -14,6 +14,8 @@ See [Quick Startup](docs/C-CCASEdevquickstartup-020721-0912.pdf) for getting sta
 
 ## Structure
 
+![](docs/call-center-aws-infrastructure.png)
+
 The event-driven AI pipeline is structured as follows,
 
 1. Audio file dropped in input folder of transcription input S3 bucket.
