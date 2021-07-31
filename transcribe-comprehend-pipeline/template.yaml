@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Pass transcriptions from S3 bucket through analytical services
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  ComprehendJobFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: .
+      Handler: redact_and_comprehend.app.lambda_handler
+      Runtime: python3.8
+      MemorySize: 128
+      Timeout: 5
+      Role: >-
+        arn:aws:iam::337847985510:role/transcribe-and-comprehend
+      Events:
+        ComprehendBucketEvent1:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: ComprehendInputBucket
+            Events:
+              - 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: transcribe_comprehend_pipeline/transcriptions_raw/
+                  - Name: suffix
+                    Value: .json
+  TranscribeJobFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: .
+      Handler: transcribe_and_redact.app.lambda_handler
+      Runtime: python3.8
+      MemorySize: 128
+      Timeout: 5
+      Role: >-
+        arn:aws:iam::337847985510:role/transcribe-and-comprehend
+      Events:
+        TranscribeBucketEvent1:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: TranscribeInputBucket
+            Events:
+              - 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: transcribe_comprehend_pipeline/transcriptions_raw/
+      Tags:
+        Project: transcribe_comprehend_pipeline
+  ComprehendInputBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "cti-comprehend-job-input"
+  TranscribeInputBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "cti-transcribe-job-input"
