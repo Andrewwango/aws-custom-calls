@@ -4,7 +4,40 @@ A pipeline for analysing call center calls using AWS Machine Learning services. 
 
 The pipeline is implemented in the [AWS Serverless Application Model](https://aws.amazon.com/serverless/sam/) which provides a scalable and flexible way of deploying an AWS application. The Machine Learning services are called using [AWS Lambda](aws.amazon.com/lambda/) functions, as described below. Audio is ingested, transcriptions are stored and structured analytics are stored using [AWS S3](aws.amazon.com/s3/). The whole stack is deployed to [AWS CloudFormation](https://aws.amazon.com/cloudformation/).
 
-See [Quick Startup](docs/C-CCASEdevquickstartup-020721-0912.pdf) for getting started.
+## Getting started
+
+1. `git clone https://github.com/Andrewwango/aws-custom-calls.git`
+2. Install AWS CLI and configure with `aws configure`, default region `eu-west-2 (London)`.
+3. Install AWS SAM CLI.
+4. 
+            cd ccase-setup/transcribe-comprehend-pipeline
+            sam build and 
+            sam deploy --guided
+
+View the updated stack on AWS CloudFormation.
+
+5. Test the pipeline: drop an audio file in `s3://cti-transcribe-job-input/transcribe_comprehend_pipeline/transcriptions_raw/`. Structured analytics CSV output in  `s3://cti-comprehend-job-output/transcribe_comprehend_pipeline/output/`.
+6. AWS Quicksight: create manifest json which points to output S3 bucket. (Make sure `AWSQuickSightS3ConsumersPolicy` policy is added).
+
+```json
+{
+    "fileLocations": [
+        {"URIs": []},
+        {
+            "URIPrefixes": [
+                "https://cti-comprehend-job-output.s3.eu-west-2.amazonaws.com/transcribe_comprehend_pipeline/output/"
+            ]
+        }
+    ],
+    "globalUploadSettings": {
+        "format": "CSV",
+        "delimiter": ",",
+        "textqualifier": "'",
+        "containsHeader": "true"
+    }
+}
+```
+7. Create new Quicksight Dataset with this manifest. Check all columns are appropriately imported. Create new Quicksight Analysis.
 
 ## Contents
 1. [Structure](#Structure)
