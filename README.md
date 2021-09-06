@@ -10,9 +10,9 @@ The pipeline is implemented in the [AWS Serverless Application Model](https://aw
 2. Install AWS CLI and configure with `aws configure`, default region `eu-west-2 (London)`.
 3. Install AWS SAM CLI.
 4. 
-            cd ccase-setup/transcribe-comprehend-pipeline
-            sam build and 
-            sam deploy --guided
+        cd ccase-setup/transcribe-comprehend-pipeline
+        sam build and 
+        sam deploy --guided
 
 View the updated stack on AWS CloudFormation.
 
@@ -47,7 +47,7 @@ View the updated stack on AWS CloudFormation.
 
 ## Structure
 
-![](docs/call-center-aws-infrastructure.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/call-center-aws-infrastructure.png)
 
 The event-driven AI pipeline is structured as follows,
 
@@ -107,13 +107,13 @@ The Lambda function improves on the built-in capabilities of AWS Comprehend. The
 
 The current Quicksight Dataset reads raw CSVs from folder and can be manually or automatically refreshed to ingest new data. Quicksight must be configured to have a role with the correct policy to read the S3 bucket. Currently the CSV columns read as follows: `Filename,Datetime,Job,Description,Value,Text,Confidence` from which a Quicksight Analysis is easily and quickly created. Graphs and charts are created by drag-and-dropping fields and creating filters. Publish an Analysis to create a Dashboard, which can be exported in Enterprise Edition.
 
-![](docs/quicksight-sentiment.png)
-![](docs/quicksight-entities.png)
-![](docs/quicksight-keyphrases.png)
-![](docs/quicksight-talkover.png)
-![](docs/quicksight-languages.png)
-![](docs/quicksight-keyphraseswordcloud.png)
-![](docs/quicksight-sentimentovertime.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-sentiment.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-entities.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-keyphrases.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-talkover.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-languages.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-keyphraseswordcloud.png)
+![](https://github.com/Andrewwango/aws-custom-calls/blob/main/docs/quicksight-sentimentovertime.png)
 
 Scatter plot of Value on X vs `sentiment_code` (calculated field embedding sentiment text) on Y. Filters: Job-`sentiment_chunk`,Description-`sentiment`,Filename-`redacted-....json`
 
