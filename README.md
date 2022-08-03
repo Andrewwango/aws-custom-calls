@@ -1,5 +1,8 @@
 # aws-custom-calls
 ## Serverless AI services pipeline
+
+Update: this project was the initial prototype for [CCASE](https://www.reply.com/data-reply/ccase) which is on [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-faqktzg244ufu)!
+
 A pipeline for analysing call center calls using AWS Machine Learning services. We use [AWS Transcribe](aws.amazon.com/transcribe/) for transcribing call center audio and elements of the [AWS Comprehend](https://aws.amazon.com/comprehend/) service for providing analytics. Custom analytics are built on top of AWS Comprehend to provide more relevant analytics. Insights of the analytics are published on [AWS Quicksight](aws.amazon.com/quicksight/).
 
 The pipeline is implemented in the [AWS Serverless Application Model](https://aws.amazon.com/serverless/sam/) which provides a scalable and flexible way of deploying an AWS application. The Machine Learning services are called using [AWS Lambda](aws.amazon.com/lambda/) functions, as described below. Audio is ingested, transcriptions are stored and structured analytics are stored using [AWS S3](aws.amazon.com/s3/). The whole stack is deployed to [AWS CloudFormation](https://aws.amazon.com/cloudformation/).
