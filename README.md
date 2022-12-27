@@ -55,10 +55,10 @@ View the updated stack on AWS CloudFormation.
 The event-driven AI pipeline is structured as follows,
 
 1. Audio file dropped in input folder of transcription input S3 bucket.
-2. Transcription services Lambda function transcribe_and_redact invoked by S3 trigger with prefix/suffix filter.
-3. transcribe_and_redact performs transcription by calling **AWS Transcribe** via boto3. Transcription json output to input folder of comprehend input S3 bucket. Audio file copied to processed folder (if successful - TODO) and deleted from input (TODO [1]).
-4. Comprehend + analytics services Lambda function redact_and_comprehend invoked by S3 trigger with prefix/suffix filter.
-5. redact_and_comprehend performs **AWS Comprehend**-powered and custom analytics on transcriptions (including on different speakers, timings etc.). Analytics output to CSV file placed in output folder of comprehend output S3 bucket. Transcription moved to processed folder if successful.
+2. Transcription services Lambda function `transcribe_and_redact` invoked by S3 trigger with prefix/suffix filter.
+3. `transcribe_and_redact` performs transcription by calling **AWS Transcribe** via boto3. Transcription json output to input folder of comprehend input S3 bucket. Audio file copied to processed folder (if successful - TODO) and deleted from input (TODO [1]).
+4. Comprehend + analytics services Lambda function `redact_and_comprehend` invoked by S3 trigger with prefix/suffix filter.
+5. `redact_and_comprehend` performs **AWS Comprehend**-powered and custom analytics on transcriptions (including on different speakers, timings etc.). Analytics output to CSV file placed in output folder of comprehend output S3 bucket. Transcription moved to processed folder if successful.
 6. **AWS Quicksight** Dataset configured on output folder of comprehend output S3 bucket which imports all analytics output CSVs.
 7. Connected AWS Quicksight Analysis produces charts and graphs based on the raw imported data and various aggregates.
 
